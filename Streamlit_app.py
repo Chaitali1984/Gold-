@@ -26,7 +26,7 @@ def user_input_features():
    clf = ARIMA()
    clf.fit(1,2182)
 
-  prediction = clf.predict(df)
+  
 prediction_proba = clf.predict_proba(df)
 
 st.subheader('Predicted Result')
