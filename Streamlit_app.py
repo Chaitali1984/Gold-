@@ -13,8 +13,6 @@ def user_input_features():
 
    data = {'price'}
 
- features = pd.DataFrame(data,index = [0])
-          return features 
 
    df = user_input_features()
    st.subheader('User Input parameters')
