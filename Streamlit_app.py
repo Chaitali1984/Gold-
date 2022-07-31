@@ -1,37 +1,47 @@
+
+
+import streamlit as st
+import datetime
+import plotly.express as px
+import plotly.graph_objects as go
+
+#Importing Libreries
+
 import pandas as pd
-import streamlit as st 
-from statsmodels.tsa.arima_model import ARIMA
-from pickle import dump
-from pickle import load
 
-st.title('Model Deployment: ARIMA')
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
-st.sidebar.header('User Input Parameters')
+import warnings
+df=pd.read_csv('Gold_data.csv')
 
-def user_input_features():
-   price =  st.sidebar.number_input("30")
-
-   data = {'price'}
+hwmodel=ExponentialSmoothing(df['price'],seasonal='mul',trend='add',seasonal_periods=24).fit()
 
 
-   df = user_input_features()
-   st.subheader('User Input parameters')
-   st.write(df)
 
-   Gold_Price  = pd.read_csv("C:/Users/Hp/Downloads/Gold_data.csv")
+def main():
+    st.title("Gold Price Predictor")
+    st.info("Let us predict the Price of GOLD for the Future")
 
-   train = Gold_Price [:2182]
-   test  = Gold_Price [2182:]
-   
-   clf = ARIMA()
-   clf.fit(1,2182)
+    s = datetime.date(2022,5,24)
+    e = st.date_input("Enter the ending Date to Predict the Gold Prices")
+    diff=( (e-s).days+1)
+      
+    if st.button("PREDICT"):
+        index_future_dates=pd.date_range(start= s ,end= e)
+        pred=hwmModel.forecast(diff).rename('Price')
+        pred.index=index_future_dates
+        df = pd.DataFrame(pred)
 
-  
-prediction_proba = clf.predict_proba(df)
+        st.dataframe(df)
 
-st.subheader('Predicted Result')
-st.write('Yes' if prediction_proba[0][1] > 0.5 else 'No')
+        st.line_chart(df)
 
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
-   
+
+
+
+
+
+
+
+if __name__ == '__main__':
+   main() 
