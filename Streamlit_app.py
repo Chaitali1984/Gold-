@@ -9,7 +9,7 @@ import datetime
 
 import pandas as pd
 
-from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
 
 import warnings
 df=pd.read_csv('Gold_data.csv')
